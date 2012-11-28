@@ -1,0 +1,2 @@
+#!/bin/bash
+for i in `svn st | grep -e "^\(M\|A\).*php$" | awk {'print $2'}`; do php -l "$i"; done

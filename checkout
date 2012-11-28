@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+# coding: utf
+import os
+import sys
+
+# Basic usage notes. Super simple script not really
+# an optional option
+if len(sys.argv) != 2:
+    print 'usage: checkout.py <branch-directory>'
+    exit()
+
+directory = sys.argv[1]
+
+# Error message if the path provided doesn't exist.
+if not os.path.exists(os.path.join(os.getcwd(), directory)):
+    print 'invalid directory "%s" (%s)' % (directory, os.path.join(os.getcwd(), directory))
+    exit()
+
+starting_directory = os.getcwd()
+framework_directory = os.path.join(os.getcwd(), directory, 'legacy', 'htdocs', 'framework')
+unittest_directory = os.path.join(starting_directory, directory, 'ZF', 'unittest')
+
+if not os.path.exists(framework_directory):
+    os.mkdir(framework_directory)
+
+if not os.path.exists(os.path.join(framework_directory, 'application')):
+    os.symlink('../../../ZF/application', os.path.join(framework_directory, 'application'))
+
+if not os.path.exists(os.path.join(framework_directory, 'library')):
+    os.symlink('../../../ZF/library', os.path.join(framework_directory, 'library'))
+
+if not os.path.exists(os.path.join(framework_directory, 'public')):
+    os.symlink('../../../ZF/public', os.path.join(framework_directory, 'public'))
+
+if not os.path.exists(os.path.join(os.getcwd(), directory, 'ZF/library', 'Zend')):
+    os.symlink('/data/Zend/library/Zend/', os.path.join(os.getcwd(), directory, 'ZF/library', 'Zend'))
+
+os.chdir(unittest_directory)
+os.system('php setup.php quiet')
+
+os.chdir(starting_directory)
+
+if os.path.lexists('istockphoto.com'):
+    os.unlink('istockphoto.com')
+os.symlink(os.path.join(directory, 'legacy'),'istockphoto.com')
+
+print 'Done'
