@@ -155,7 +155,7 @@ class ErrorDetails(object):
             if self.error_description.find('Name or service not known') > -1:
                 extra_details = None
                 if self.options:
-                    extra_details = 'The url requested was %s' % (term_colours.make_blue(self.options.api_url + self.options.path))
+                    extra_details = 'The url requested was %s' % (term_colours.make_blue(self.options.protocol + '://' + self.options.api_url + self.options.path))
 
                 reason = self._make_reason(self.error_description,
                                            'This is usually caused by the request url being incorrect, ' +
@@ -176,7 +176,7 @@ class ErrorDetails(object):
             elif self.error_description == 'Connection refused':
                 extra_details = None
                 if self.options:
-                    extra_details = 'The url requested was %s' % term_colours.make_blue(self.options.api_url)
+                    extra_details = 'The url requested was %s' % term_colours.make_blue(self.options.protocol + '://' + self.options.api_url)
                 reason = self._make_reason(self.error_description, 'This is usually caused by Apache on the server being down.',
                                            extra_details)
 
@@ -235,9 +235,9 @@ class BlueSkyApiTest(object):
             self.options.method_number = int(self.options.method_number)
 
         if self.options.data_transport.lower() == 'xml':
-            self.server = xmlrpclib.Server(self.options.api_url + self.options.path + self.xdebug_param, verbose=self.options.verbose_request)
+            self.server = xmlrpclib.Server(self.options.protocol + '://' + self.options.api_url + self.options.path + self.xdebug_param, verbose=self.options.verbose_request)
         elif self.options.data_transport.lower() == 'json':
-            self.server = jsonrpclib.Server(self.options.api_url + self.options.path + self.xdebug_param, verbose=self.options.verbose_request)
+            self.server = jsonrpclib.Server(self.options.protocol + '://' + self.options.api_url + self.options.path + self.xdebug_param, verbose=self.options.verbose_request)
         elif self.options.data_transport.lower() == 'soap':
             server = None
 
@@ -248,7 +248,7 @@ class BlueSkyApiTest(object):
             if self.options.data_transport.lower() == 'xml':
                 self.methods_available = self.server.system.listMethods()
             elif self.options.data_transport.lower() == 'json':
-                self.json_methods_available = json.loads(urllib.urlopen(self.options.api_url + self.options.path + self.xdebug_param).read())
+                self.json_methods_available = json.loads(urllib.urlopen(self.options.protocol + '://' + self.options.api_url + self.options.path + self.xdebug_param).read())
                 self.methods_available = []
                 for method_name in self.json_methods_available['methods']:
                     self.methods_available.append(method_name)
@@ -307,7 +307,7 @@ class BlueSkyApiTest(object):
         chosen method to run.
 
         """
-        
+
         term_colours = TerminalColours()
 
         try:
@@ -390,8 +390,8 @@ class BlueSkyApiTest(object):
 
             elif 'istockphoto.asset.getAssetDataById' == self.methods_available[self.method_number]:
                 asset_by_id_params = {'token'   :self.token,
-                                      'assetId' :11604984}
-                                      # 'assetId' :662}
+                                      # 'assetId' :11604984}
+                                       'assetId' : int(self.options.file_id)}
                 result = getattr(self.server, self.methods_available[self.method_number])(asset_by_id_params)
 
             elif 'istockphoto.asset.getAssetStatusSummary' == self.methods_available[self.method_number]:
@@ -430,16 +430,19 @@ def main():
 
     parser = OptionParser()
 
-    parser.add_option('-v', '--verbose',  action='store_true', dest='verbose_request', help='Display server request and response details.', default=False)
+    parser.add_option('-c', '--protocol', action='store',      dest='protocol',        help='Intended for https vs. http.',                 default='http')
     parser.add_option('-d', '--xdebug',   action='store_true', dest='xdebug_request',  help='Make requests with ?XDEBUG_SESSION_START.',    default=False)
-    parser.add_option('-o', '--profile',  action='store_true', dest='profile_request', help='Make requests with ?XDEBUG_PROFILE=1.',        default=False)
-    parser.add_option('-k', '--api_key',  action='store',      dest='api_key',         help='API Key to use for requests.',                 default='bd0032c1dd8c8c41d66a91f5')
-    parser.add_option('-u', '--username', action='store',      dest='username',        help='Username to use for retrieving api token.',    default='drkwng')
-    parser.add_option('-p', '--password', action='store',      dest='password',        help='Password to use for retrieving api token.',    default='test1234')
-    parser.add_option('-r', '--url',      action='store',      dest='api_url',         help='API url to query.',                            default='https://dev-deifante-blue.istockphoto.com')
     parser.add_option('-f', '--path',     action='store',      dest='path',            help='Path where webservices sit.',                  default='/webservices/xmlrpc/')
+    parser.add_option('-i', '--file_id',  action='store',      dest='file_id',         help='Request a specific file.',                     default=11604984)
+    parser.add_option('-k', '--api_key',  action='store',      dest='api_key',         help='API Key to use for requests.',                 default='bd0032c1dd8c8c41d66a91f5')
     parser.add_option('-m', '--method',   action='store',      dest='method_number',   help="Quickly run specified method number.",         default=None)
+    parser.add_option('-o', '--profile',  action='store_true', dest='profile_request', help='Make requests with ?XDEBUG_PROFILE=1.',        default=False)
+    parser.add_option('-p', '--password', action='store',      dest='password',        help='Password to use for retrieving api token.',    default='test1234')
+    parser.add_option('-r', '--url',      action='store',      dest='api_url',         help='API url to query.',                            default='dev-deifante-blue.istockphoto.com')
     parser.add_option('-t', '--transport',action='store',      dest='data_transport',  help="xml|json|soap",                                default='xml')
+    parser.add_option('-u', '--username', action='store',      dest='username',        help='Username to use for retrieving api token.',    default='drkwng')
+    parser.add_option('-v', '--verbose',  action='store_true', dest='verbose_request', help='Display server request and response details.', default=False)
+
 
     (options, args) = parser.parse_args()
 
