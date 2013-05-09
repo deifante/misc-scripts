@@ -234,6 +234,9 @@ class BlueSkyApiTest(object):
         if self.options.method_number:
             self.options.method_number = int(self.options.method_number)
 
+        if self.options.verbose_request:
+            print 'Making request to %s' % self.options.protocol + '://' + self.options.api_url + self.options.path + self.xdebug_param
+
         if self.options.data_transport.lower() == 'xml':
             self.server = xmlrpclib.Server(self.options.protocol + '://' + self.options.api_url + self.options.path + self.xdebug_param, verbose=self.options.verbose_request)
         elif self.options.data_transport.lower() == 'json':
@@ -390,8 +393,7 @@ class BlueSkyApiTest(object):
 
             elif 'istockphoto.asset.getAssetDataById' == self.methods_available[self.method_number]:
                 asset_by_id_params = {'token'   :self.token,
-                                      # 'assetId' :11604984}
-                                       'assetId' : int(self.options.file_id)}
+                                      'assetId' : int(self.options.file_id)}
                 result = getattr(self.server, self.methods_available[self.method_number])(asset_by_id_params)
 
             elif 'istockphoto.asset.getAssetStatusSummary' == self.methods_available[self.method_number]:
@@ -408,11 +410,11 @@ class BlueSkyApiTest(object):
             elif 'istockphoto.asset.setAssetStatus' == self.methods_available[self.method_number]:
                 set_status_params = {'token'     :self.token,
                                      'client'    :'getty',
-                                     'assetId'   :1000,
+                                     'assetId'   :int(self.options.file_id),
                                      'partnerId' :33025,
-                                     'status'    :'complete',
-                                     'version'   :16,
-                                     'message'   :"Is it hacked?"}
+                                     'status'    :'error',
+                                     'version'   :42,
+                                     'message'   :'The checksum supplied is: 0'}
                 result = getattr(self.server, self.methods_available[self.method_number])(set_status_params)
 
         except Exception as e:
