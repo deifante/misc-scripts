@@ -99,3 +99,12 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+## Added in an attempt to make sqlplus work
+## export ORACLE_HOME="/usr/lib/oracle/11.2/client64/"
+## export PATH=$PATH:$ORACLE_HOME/bin
+
+### Added by the Heroku Toolbelt
+# export PATH="/usr/local/heroku/bin:$PATH"
