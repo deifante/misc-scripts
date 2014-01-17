@@ -413,7 +413,7 @@ class BlueSkyApiTest(object):
                 set_status_params = {'token'     :self.token,
                                      'client'    :'getty',
                                      'assetId'   :int(self.options.file_id),
-                                     'partnerId' :int(self.options.getty_id),
+                                     'partnerId' :self.options.getty_id,
                                      'status'    :'success',
                                      'version'   :42,
                                      'message'   :self.options.message}
