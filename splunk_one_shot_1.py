@@ -12,8 +12,8 @@ port     = 8089
 assetId = 21363876
 
 host     = 'cf-splunk-indexer1.istockphoto.com'
-username = 'dwalters'
-password = 'fyle73aB!'
+username = 'admin'
+password = 'changeme'
 
 # Create a Service instance and log in
 service = client.connect(host=host, port=port, username=username, password = password)

@@ -26,6 +26,10 @@ username = 'admin'
 password = 'changeme'
 port     = 8089
 
+host     = 'cf-splunk-indexer1.istockphoto.com'
+username = 'username'
+password = 'password'
+
 class ResultsSpitter(threading.Thread):
     """Threaded Splunk Results Retrieval"""
     def __init__(self, queue, splunk_service):
@@ -148,6 +152,18 @@ class ResultsSpitter(threading.Thread):
         # to make a set comprehension with only unique file ids
         return {int(x['assetId']) for x in self.search_results}
 
+    def get_id_count(self):
+        """
+        Count how many times every id shows up.
+        """
+        incident_report = {}
+        for x in self.search_results:
+            if x['assetId'] in incident_report:
+                incident_report[x['assetId']]+=1
+            else:
+                incident_report[x['assetId']]=1
+        return incident_report
+
     def print_results(self):
         """
         Print the search query and every matching event.
@@ -172,10 +188,10 @@ service = client.connect(host=host, port=port, username=username, password=passw
 # The list of searches that we are going to perform.
 search_strings = [
     'search "Change to Bluesky File" "Received Error"',
-    'search "Change to Bluesky File" Queued',
-    'search "Change to Bluesky File" "Received Success"',
-    'search "Change to Bluesky File" "Sent Metadata"',
-    'search "Change to Bluesky File" "Sent Asset"'
+    # 'search "Change to Bluesky File" Queued',
+    # 'search "Change to Bluesky File" "Received Success"',
+    # 'search "Change to Bluesky File" "Sent Metadata"',
+    # 'search "Change to Bluesky File" "Sent Asset"'
     ]
 
 # Use this regular expression to get the action, assetId and partner data out from
@@ -200,17 +216,29 @@ for i in range(len(search_strings)):
 for search_string in search_strings:
     job_queue.put({
             'search_string' :search_string,
-            'latest_time'   :datetime.datetime(2013, 7, 22, 0, 0, 0),
-            'earliest_time' :datetime.datetime(2013, 7, 21, 0, 0, 0)
+            'latest_time'   :datetime.datetime.now(), # This is the bigger number
+            'earliest_time' :datetime.datetime.now() - datetime.timedelta(3)  # This is the lower number
+            # 'latest_time'   :datetime.datetime(2013, 8, 20), # This is the bigger number
+            # 'earliest_time' :datetime.datetime(2013, 8, 19)  # This is the lower number
             })
 
 # wait on the queue until everything has been processed
-print 'job work sent, waiting'
+#print 'job work sent, waiting'
 job_queue.join()
 
 # Print out some results for each search query.
 for spitter in spitters:
-    print '%s:%d' % (spitter, len(spitter))
-    #spitter.print_results()
-    print '# of Unique Ids: %d' % len(spitter.get_unique_ids())
+    # print '%s:%d' % (spitter, len(spitter))
+    # spitter.print_results()
+
+    #This is the stuff I usually use. just get the unique errors
+    unique_ids = spitter.get_unique_ids()
+    print '# of Unique Ids: %d' % len(unique_ids)
+    for file_id in unique_ids:
+        print file_id
     print
+
+    # print 'How many times did each file id show up?'
+    # id_count = spitter.get_id_count()
+    # for file_id in id_count:
+    #     print '%d\t%d' % (id_count[file_id], file_id)

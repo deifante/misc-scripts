@@ -1,7 +1,7 @@
 import splunklib.client as client
 # host     = 'cf-splunk-indexer1.istockphoto.com'
-# username = 'dwalters'
-# password = 'fyle73aB^'
+# username = 'username'
+# password = 'password'
 port     = 8089
 # the above settings work. just keeping these local settings so I don't break splunk
 host     = 'localhost'

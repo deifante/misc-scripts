@@ -13,7 +13,7 @@ if __name__ ==  '__main__':
     fileId = 0
     parser = bluesky.create_bluesky_option_parser()
     #live
-    pre_defined_args = ['-r', 'bluesky-api.istockphoto.com', '-c', 'https', '-k', 'e5adb70ecb2ce9db3589197a756e9197', '-u', 'deifante', '-q', '-pfyle73a', '-m', '7']
+    pre_defined_args = ['-r', 'bluesky-api.istockphoto.com', '-c', 'https', '-k', 'e5adb70ecb2ce9db3589197a756e9197', '-u', 'deifante', '-q', '-p$$$$$$', '-m', '7']
     #dev
     #pre_defined_args = ['-q', '-m', '7']
     for line in sys.stdin:
