@@ -25,20 +25,21 @@ for line in sys.stdin:
         sys.stderr.flush()
 
     if len(accumulator) > inserts_per_statement:
-        sql_statement = 'insert into tbl_GettyIstockAssetMap (AbstractFileID, GettyID) values '
+        sql_statement = 'insert into tbl_GettyIstockAssetMap (AbstractFileID, GettyID, SyncedWithGetty) values '
         for id_pair in accumulator:
-            sql_statement += '({0},"{1}"),'.format(id_pair[0], id_pair[1])
+            sql_statement += '({0},"{1}", 1),'.format(id_pair[0], id_pair[1])
         accumulator = []
         sql_statement = sql_statement[:-1] + ';'
         print sql_statement
 
 if len(accumulator):
-    sql_statement = 'insert into tbl_GettyIstockAssetMap (AbstractFileID, GettyID) values '
+    sql_statement = 'insert into tbl_GettyIstockAssetMap (AbstractFileID, GettyID, SyncedWithGetty) values '
     for id_pair in accumulator:
-        sql_statement += '({0},{1}),'.format(id_pair[0], id_pair[1])
+        sql_statement += '({0},"{1}", 1),'.format(id_pair[0], id_pair[1])
     accumulator = []
     sql_statement = sql_statement[:-1] + ';'
     print sql_statement
+
 print 'alter table tbl_GettyIstockAssetMap enable keys;'
 print 'SET UNIQUE_CHECKS = 1;'
 print 'SET FOREIGN_KEY_CHECKS = 1;'
