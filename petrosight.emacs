@@ -87,8 +87,12 @@
       display-time-24hr-format t)
 (display-time)
 
+;;ln -s ~/Projects/git/contrib/emacs/ ./git
 (add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/Projects/git/contrib/emacs/")
 (require 'vc-ediff)
+(require 'git)
+(require 'git-blame)
 (eval-after-load "vc-hooks"
   '(define-key vc-prefix-map "=" 'vc-ediff))
 
