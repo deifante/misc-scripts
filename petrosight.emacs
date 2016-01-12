@@ -39,7 +39,7 @@
 
 ;allow a little copy and paste for more than just emacs
 (setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;;load my scratch file on load
 (find-file "~/temp.txt")
@@ -88,11 +88,11 @@
 (display-time)
 
 ;;ln -s ~/Projects/git/contrib/emacs/ ./git
-(add-to-list 'load-path "~/.emacs.d/")
-(add-to-list 'load-path "~/Projects/git/contrib/emacs/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/Source/git/contrib/emacs/")
 (require 'vc-ediff)
-(require 'git)
-(require 'git-blame)
+;(require 'git)
+;(require 'git-blame)
 (eval-after-load "vc-hooks"
   '(define-key vc-prefix-map "=" 'vc-ediff))
 
@@ -126,3 +126,8 @@
 
 (setq web-mode-enable-current-element-highlight t)
 (put 'narrow-to-page 'disabled nil)
+
+;enables spell check on OSX
+(add-to-list 'exec-path "/usr/local/bin")
+(setq ispell-programm-name "aspell")
+
