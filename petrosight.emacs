@@ -3,27 +3,39 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(case-fold-search t)
  '(column-number-mode t)
  '(css-indent-offset 2)
+ '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (tsdh-dark)))
- '(custom-safe-themes (quote ("bc89fda3d232a3daa4eb3a9f87d6ffe1272fea46e4cf86686d9e8078e4209e2c" default)))
+ '(custom-safe-themes
+   (quote
+    ("bc89fda3d232a3daa4eb3a9f87d6ffe1272fea46e4cf86686d9e8078e4209e2c" default)))
  '(display-time-mode t)
  '(fringe-mode 6 nil (fringe))
  '(global-font-lock-mode t nil (font-lock))
  '(js-indent-level 2)
  '(linum-format (quote dynamic))
+ '(package-selected-packages
+   (quote
+    (js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode)))
+ '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t nil (paren))
+ '(standard-indent 2)
  '(text-mode-hook (quote (text-mode-hook-identify)))
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
 (setq font-lock-maximum-decoration t)
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
 (fset 'yes-or-no-p 'y-or-n-p) ; stop forcing me to spell out "yes"
 (setq inhibit-startup-message t)
@@ -51,6 +63,7 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t) ;; enable fuzzy matching
 
+
 ;; allow me to edit files on my vm with a local emacs instance
 (require 'tramp)
 (setq
@@ -72,6 +85,7 @@
 (setq-default indent-tabs-mode nil)
 
 (autoload 'geben "geben" "DBGp protocol front-end" t)
+
 
 (require 'org-install)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -104,12 +118,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :stipple nil :background "gray20" :foreground "white smoke" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :foundry "nil" :family "Menlo")))))
 
 (put 'narrow-to-region 'disabled nil)
 
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-
 
 (setq web-mode-engines-alist
       '(("php"    . "\\.phtml\\'")
@@ -131,3 +144,15 @@
 (add-to-list 'exec-path "/usr/local/bin")
 (setq ispell-programm-name "aspell")
 
+;js2-mode
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+(global-set-key (kbd "C-x f") 'find-file-in-repository)
+
+;enables ag
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+
+;; setup file ending in ".module" to open in php-mode
+(add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
+;; setup file ending in ".inc" to open in php-mode
+(add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
