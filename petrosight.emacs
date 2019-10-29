@@ -10,7 +10,6 @@
  '(case-fold-search t)
  '(column-number-mode t)
  '(css-indent-offset 2)
- '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (tsdh-dark)))
  '(custom-safe-themes
    (quote
@@ -20,9 +19,10 @@
  '(global-font-lock-mode t nil (font-lock))
  '(js-indent-level 2)
  '(linum-format (quote dynamic))
+ '(org-agenda-files (quote ("~/.emacs.d/org/d.org")))
  '(package-selected-packages
    (quote
-    (js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode)))
+    (terraform-mode docker-compose-mode dockerfile-mode js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode)))
  '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t nil (paren))
@@ -84,7 +84,7 @@
 
 (setq-default indent-tabs-mode nil)
 
-(autoload 'geben "geben" "DBGp protocol front-end" t)
+;(autoload 'geben "geben" "DBGp protocol front-end" t)
 
 
 (require 'org-install)
@@ -118,7 +118,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "gray20" :foreground "white smoke" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :foundry "nil" :family "Menlo")))))
+ '(default ((t (:inherit nil :stipple nil :background "gray20" :foreground "white smoke" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "nil" :family "Monaco")))))
 
 (put 'narrow-to-region 'disabled nil)
 
@@ -156,3 +156,16 @@
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 ;; setup file ending in ".inc" to open in php-mode
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
+;; setup file ending in ".inc" to open in php-mode
+(add-to-list 'auto-mode-alist '("\\.install\\'" . php-mode))
+
+;; Sets tab width to 2 spaces in php mode.
+(add-hook 'php-mode-hook 'my-php-mode-hook)
+(defun my-php-mode-hook ()
+  "My PHP mode configuration."
+  (setq indent-tabs-mode nil
+        tab-width 2
+        c-basic-offset 2))
+(put 'downcase-region 'disabled nil)
+
+(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
