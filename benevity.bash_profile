@@ -1,29 +1,4 @@
-
-# The next line updates PATH for the Google Cloud SDK.
-source '/Users/dwalters/google-cloud-sdk/path.bash.inc'
-
-# The next line enables shell command completion for gcloud.
-source '/Users/dwalters/google-cloud-sdk/completion.bash.inc'
-
-# Setting PATH for Python 3.4
-# The orginal version is saved in .bash_profile.pysave
-#PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
-#export PATH
-
-# Setting PATH for Python 3.7
-#PATH=""
-
-if [ -f /Users/dwalters/Source/git/contrib/completion/git-prompt.sh ]; then
-. /Users/dwalters/Source/git/contrib/completion/git-prompt.sh
-fi
-
-#  Customize BASH PS1 prompt to show current GIT repository and branch.
-#  by Mike Stewart - http://MediaDoneRight.com
-
-#  SETUP CONSTANTS
-#  Bunch-o-predefined colors.  Makes reading code easier than escape sequences.
-#  I don't remember where I found this.
-
+#  Predefined colors.
 # Reset
 Color_Off="\[\033[0m\]"       # Text Reset
 
@@ -108,6 +83,13 @@ Jobs="\j"
 
 # PS1 snippet adopted from code for MAC/BSD : http://allancraig.net/index.php?option=com_content&view=article&id=108:ps1-export-command-for-git&catid=45:general&Itemid=96
 
+source /usr/local/etc/bash_completion.d/git-completion.bash
+source /usr/local/etc/bash_completion.d/git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE="true"
+GIT_PS1_SHOWUPSTREAM="auto"
+GIT_PS1_SHOWCOLORHINTS="true"
+
+
 export PS1=$IBlack$Time12h$Color_Off'$(git branch &>/dev/null;\
 if [ $? -eq 0 ]; then \
   echo "$(echo `git status` | grep "nothing to commit" > /dev/null 2>&1; \
@@ -125,11 +107,11 @@ fi)'
 
 alias iso_date="date '+%Y-%m-%dT%H:%M:%S'"
 alias re_tag="ctags -e -R ."
-alias sauce_tunnel="/Users/dwalters/bin/sc-4.5.4-osx/bin/sc -u benevity-webdev -k fc8441f9-581a-4060-a196-33f3c3ddcb8a -i deifante-tunnel --dns=127.0.0.1"
-alias my_jenkins="java -Djavax.net.ssl.trustStore=/Users/dwalters/.jenkins/.keystore/cacerts -Djavax.net.ssl.trustStorePassword=changeit -jar /usr/local/Cellar/jenkins/2.105/libexec/jenkins.war --httpPort=8095"
+alias sauce_tunnel="/Users/deifantewalters/bin/sc-4.5.4-osx/bin/sc -u benevity-webdev -k fc8441f9-581a-4060-a196-33f3c3ddcb8a -i deifante-tunnel --dns=127.0.0.1"
+alias my_jenkins="java -Djavax.net.ssl.trustStore=/Users/deifantewalters/.jenkins/.keystore/cacerts -Djavax.net.ssl.trustStorePassword=changeit -jar /usr/local/Cellar/jenkins/2.105/libexec/jenkins.war --httpPort=8095"
 alias sudo_emacs="sudo /Applications/Emacs.app/Contents/MacOS/Emacs"
 
-export NVM_DIR="/Users/dwalters/.nvm"
+export NVM_DIR="/Users/deifantewalters/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 # NVM
 if [ -s ~/.nvm/nvm.sh ]; then
@@ -137,17 +119,17 @@ if [ -s ~/.nvm/nvm.sh ]; then
 	source ~/.nvm/nvm.sh
 fi
 
-JENKINS_HOME=/Users/dwalters/.jenkins
+JENKINS_HOME=/Users/deifantewalters/.jenkins
 JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_74.jdk/Contents/Home
 export PATH="/usr/local/opt/node@10/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
-export PATH="/Users/dwalters/.ebcli-virtual-env/executables:$PATH"
-export PATH="/Users/dwalters/Library/Python/3.7/bin:$PATH"
-export PATH="/Users/dwalters/Projects/py_scripts:$PATH"
-export PATH="/Users/dwalters/Projects/shell_scripts:$PATH"
-export PATH="/Users/dwalters/bin:$PATH"
-
+export PATH="/Users/deifantewalters/.ebcli-virtual-env/executables:$PATH"
+export PATH="/Users/deifantewalters/Library/Python/3.7/bin:$PATH"
+export PATH="/Users/deifantewalters/Projects/py_scripts:$PATH"
+export PATH="/Users/deifantewalters/Projects/shell_scripts:$PATH"
+export PATH="/Users/deifantewalters/bin:$PATH"
+export PATH="/Users/deifantewalters/.composer/vendor/bin:$PATH"
 
 # Initializes your local Terraform cache; clones external modules and providers
 alias tfinit="terraform init"
