@@ -10,32 +10,31 @@
  '(case-fold-search t)
  '(column-number-mode t)
  '(css-indent-offset 2)
- '(custom-enabled-themes (quote (tsdh-dark)))
+ '(custom-enabled-themes '(tsdh-dark))
  '(custom-safe-themes
-   (quote
-    ("bc89fda3d232a3daa4eb3a9f87d6ffe1272fea46e4cf86686d9e8078e4209e2c" default)))
+   '("bc89fda3d232a3daa4eb3a9f87d6ffe1272fea46e4cf86686d9e8078e4209e2c" default))
  '(display-time-mode t)
  '(flycheck-php-phpcs-executable nil)
  '(fringe-mode 6 nil (fringe))
  '(global-font-lock-mode t nil (font-lock))
  '(js-indent-level 2)
- '(linum-format (quote dynamic))
- '(org-agenda-files (quote ("~/.emacs.d/org/d.org")))
+ '(linum-format 'dynamic)
+ '(org-agenda-files '("~/.emacs.d/org/d.org"))
  '(package-selected-packages
-   (quote
-    (hcl-mode htmlize quickrun tramp projectile helm flycheck exec-path-from-shell web-mode kotlin-mode groovy-mode nginx-mode markdown-mode terraform-mode docker-compose-mode dockerfile-mode js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode)))
+   '(with-editor hcl-mode htmlize quickrun tramp projectile helm flycheck exec-path-from-shell web-mode kotlin-mode groovy-mode nginx-mode markdown-mode terraform-mode docker-compose-mode dockerfile-mode js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode))
  '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t nil (paren))
  '(standard-indent 2)
- '(text-mode-hook (quote (text-mode-hook-identify)))
+ '(text-mode-hook '(text-mode-hook-identify))
  '(tool-bar-mode nil)
- '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
+ '(uniquify-buffer-name-style 'forward nil (uniquify)))
 (setq font-lock-maximum-decoration t)
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
 (fset 'yes-or-no-p 'y-or-n-p) ; stop forcing me to spell out "yes"
@@ -58,6 +57,7 @@
 (find-file "~/temp.txt")
 (find-file "~/.emacs.d/org/d.org")
 (find-file "~/Projects/spark_secure_causes-amzn2_dev_local/data/web/dev/wpg.develop")
+(find-file "~/Projects/volunteering")
 
 
 ;;Interactively do
