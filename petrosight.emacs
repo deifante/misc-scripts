@@ -15,6 +15,7 @@
    (quote
     ("bc89fda3d232a3daa4eb3a9f87d6ffe1272fea46e4cf86686d9e8078e4209e2c" default)))
  '(display-time-mode t)
+ '(flycheck-php-phpcs-executable nil)
  '(fringe-mode 6 nil (fringe))
  '(global-font-lock-mode t nil (font-lock))
  '(js-indent-level 2)
@@ -22,7 +23,7 @@
  '(org-agenda-files (quote ("~/.emacs.d/org/d.org")))
  '(package-selected-packages
    (quote
-    (terraform-mode docker-compose-mode dockerfile-mode js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode)))
+    (hcl-mode htmlize quickrun tramp projectile helm flycheck exec-path-from-shell web-mode kotlin-mode groovy-mode nginx-mode markdown-mode terraform-mode docker-compose-mode dockerfile-mode js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode)))
  '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t nil (paren))
@@ -56,6 +57,7 @@
 ;;load my scratch file on load
 (find-file "~/temp.txt")
 (find-file "~/.emacs.d/org/d.org")
+(find-file "~/Projects/spark_secure_causes-amzn2_dev_local/data/web/dev/wpg.develop")
 
 
 ;;Interactively do
@@ -104,7 +106,9 @@
 ;;ln -s ~/Projects/git/contrib/emacs/ ./git
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/Source/git/contrib/emacs/")
-(require 'vc-ediff)
+(require 'hcl-mode)
+(add-to-list 'auto-mode-alist '("\\.tf\\'" . hcl-mode))
+;(require 'vc-ediff)
 ;(require 'git)
 ;(require 'git-blame)
 (eval-after-load "vc-hooks"
@@ -123,6 +127,9 @@
 (put 'narrow-to-region 'disabled nil)
 
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\.twig\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 (setq web-mode-engines-alist
       '(("php"    . "\\.phtml\\'")
@@ -160,12 +167,38 @@
 (add-to-list 'auto-mode-alist '("\\.install\\'" . php-mode))
 
 ;; Sets tab width to 2 spaces in php mode.
-(add-hook 'php-mode-hook 'my-php-mode-hook)
+;; (add-hook 'php-mode-hook 'my-php-mode-hook)
+;; (defun my-php-mode-hook ()
+;;   "My PHP mode configuration."
+;;   (setq indent-tabs-mode nil
+;;         tab-width 2
+;;         c-basic-offset 2))
+
 (defun my-php-mode-hook ()
   "My PHP mode configuration."
-  (setq indent-tabs-mode nil
-        tab-width 2
+  (setq tab-width 2
         c-basic-offset 2))
-(put 'downcase-region 'disabled nil)
+;(put 'downcase-region 'disabled nil)
 
-(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+;;(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+
+
+(require 'quickrun)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(require 'projectile)
+(projectile-mode +1)
+
+(setq projectile-project-search-path '("~/projects/"))
+(require 'helm)
+
+(add-hook 'php-mode-hook #'(lambda()
+                             (php-enable-drupal-coding-style)
+                             (setq c-basic-offset 2)))
+;; (add-to-list 'load-path "/Users/deifantewalters/Projects/Personal/emacs-htmlize/htmlize.el")
+(add-to-list 'load-path "/Users/deifantewalters/Projects/Personal/emacs-htmlize/")
+(require 'htmlize)
+

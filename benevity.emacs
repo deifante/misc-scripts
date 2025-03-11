@@ -24,7 +24,6 @@
    '(with-editor hcl-mode htmlize quickrun tramp projectile helm flycheck exec-path-from-shell web-mode kotlin-mode groovy-mode nginx-mode markdown-mode terraform-mode docker-compose-mode dockerfile-mode js2-mode vue-mode ag find-file-in-repository magit php-mode yaml-mode))
  '(save-place t)
  '(scroll-bar-mode nil)
- '(show-paren-mode t nil (paren))
  '(standard-indent 2)
  '(text-mode-hook '(text-mode-hook-identify))
  '(tool-bar-mode nil)
